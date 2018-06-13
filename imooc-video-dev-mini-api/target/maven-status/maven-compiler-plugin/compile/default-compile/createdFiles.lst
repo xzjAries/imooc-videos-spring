@@ -1,2 +1,4 @@
 com\imooc\controller\HelloWorldController.class
+com\imooc\Swagger2.class
+com\imooc\controller\RegistLoginController.class
 com\imooc\Application.class
