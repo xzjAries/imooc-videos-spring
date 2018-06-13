@@ -33,6 +33,7 @@ public class User {
     /**
      * 昵称
      */
+    @ApiModelProperty(hidden=true)
     private String nickname;
 
     /**
