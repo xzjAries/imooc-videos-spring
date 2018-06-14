@@ -43,8 +43,8 @@ public class RegistLoginController {
 		} else {
 			return IMoocJSONResult.errorMsg("用户名已经存在，请换一个再试");
 		}
-
-		return IMoocJSONResult.ok("注册成功");
+		user.setPassword("");
+		return IMoocJSONResult.ok(user);
 	}
 	
 	@RequestMapping("hello")
