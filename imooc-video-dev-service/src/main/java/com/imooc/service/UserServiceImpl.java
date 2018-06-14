@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.imooc.mapper.UserMapper;
 import com.imooc.pojo.User;
 
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -33,6 +36,17 @@ public class UserServiceImpl implements UserService {
 		String userId = sid.nextShort();
 		user.setId(userId);
 		userMapper.insert(user);
+	}
+
+    @Transactional(propagation=Propagation.SUPPORTS)
+	@Override
+	public User queryUserForLogin(String username, String password) {
+		Example userExample = new Example(User.class);
+		Criteria criteria = userExample.createCriteria();
+		criteria.andEqualTo("username",username);
+		criteria.andEqualTo("password",password);
+		User result = userMapper.selectOneByExample(userExample);
+		return result;
 	}
 
 }
