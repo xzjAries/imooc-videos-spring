@@ -25,4 +25,10 @@ public interface UserService {
 	 * @return
 	 */
 	public User queryUserForLogin(String username,String password);
+ 
+	/**
+	 * 用户修改信息
+	 * @param user
+	 */
+    public void updateUserInfo(User user);
 }

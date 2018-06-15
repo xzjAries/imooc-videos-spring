@@ -1,22 +1,27 @@
 package com.imooc.controller;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.imooc.pojo.User;
+import com.imooc.pojo.vo.UserVO;
 import com.imooc.service.UserService;
 import com.imooc.utils.IMoocJSONResult;
 import com.imooc.utils.MD5Utils;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Api(value = "用户注册登录接口", tags = "注册和登陆的controller")
-public class RegistLoginController {
+public class RegistLoginController extends BasicController{
 
 	@Autowired
 	private UserService userService;
@@ -43,7 +48,18 @@ public class RegistLoginController {
 			return IMoocJSONResult.errorMsg("用户名已经存在，请换一个再试");
 		}
 		user.setPassword("");
-		return IMoocJSONResult.ok(user);
+		UserVO userVO =setUserRedisSeesionToken(user);
+
+		return IMoocJSONResult.ok(userVO);
+	}
+	
+	public UserVO setUserRedisSeesionToken(User userModle) {
+		String uniqueToken = UUID.randomUUID().toString();
+		redis.set(USER_REDIS_SESSION+":"+ userModle.getId(),uniqueToken, 30*60*1000);
+		UserVO userVO = new UserVO();
+		BeanUtils.copyProperties(userModle, userVO);
+		userVO.setUserToken(uniqueToken);
+		return userVO;
 	}
 
 	@ApiOperation(value="用户登陆",notes="用户登陆接口")
@@ -62,9 +78,21 @@ public class RegistLoginController {
 		// 3.包装用户信息返回前端
         if(userExist != null) {
         	userExist.setPassword("");
-          return IMoocJSONResult.ok(userExist);
+        	UserVO userVO =setUserRedisSeesionToken(userExist);
+          return IMoocJSONResult.ok(userVO);
         }
 		return IMoocJSONResult.errorMsg("用户或者密码不正确，请重试!");
+
+	}
+	
+	@ApiOperation(value="用户注銷",notes="用户注銷接口")
+	@ApiImplicitParam(name="userId",value="用户id",required=true,
+	                  dataType="String",paramType="query")
+	@PostMapping("/loginOut")
+	public IMoocJSONResult loginOut(String userId) throws Exception {
+	    redis.del(USER_REDIS_SESSION+":"+userId);
+	    
+		return IMoocJSONResult.ok("用户注销成功");
 
 	}
 
