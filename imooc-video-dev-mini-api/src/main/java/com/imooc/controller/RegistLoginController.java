@@ -29,6 +29,7 @@ public class RegistLoginController extends BasicController{
 	@ApiOperation(value = "用户注册", tags = "用户注册")
 	@PostMapping("/regist")
 	public IMoocJSONResult regist(@RequestBody User user) throws Exception {
+		System.out.println("user:" + user.toString());
 		// 1.怕那段用戶名和密碼不能爲空
 		if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
 			return IMoocJSONResult.errorMsg("用户名和密码不能为空");
@@ -90,6 +91,8 @@ public class RegistLoginController extends BasicController{
 	                  dataType="String",paramType="query")
 	@PostMapping("/loginOut")
 	public IMoocJSONResult loginOut(String userId) throws Exception {
+		System.out.println("userId:" + userId);
+		
 	    redis.del(USER_REDIS_SESSION+":"+userId);
 	    
 		return IMoocJSONResult.ok("用户注销成功");

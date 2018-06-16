@@ -1,6 +1,7 @@
 org\n3r\idworker\Id.class
 org\n3r\idworker\strategy\DefaultRandomCodeStrategy.class
 org\n3r\idworker\utils\HttpReq.class
+com\imooc\utils\RedisOperator.class
 org\n3r\idworker\Code.class
 org\n3r\idworker\strategy\FileLock.class
 com\imooc\utils\MD5Utils.class

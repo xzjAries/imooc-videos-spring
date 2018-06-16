@@ -1,3 +1,7 @@
 com\imooc\Swagger2.class
+com\imooc\controller\HelloWord.class
 com\imooc\controller\RegistLoginController.class
 com\imooc\Application.class
+com\imooc\controller\BasicController.class
+com\imooc\WebMvcConfig.class
+com\imooc\controller\UserController.class

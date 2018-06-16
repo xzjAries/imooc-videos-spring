@@ -25,7 +25,7 @@
 			</exclusions>
 		</dependency>
 
-		<!-- 引入log4j日志依赖 -->
+		<!-- 引入log4j日志依赖 --> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j</artifactId>
@@ -138,7 +138,7 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.8.7.RELEASE</version>
-		</dependency>
+		</dependency> 
 		
 	</dependencies>
 </project>

@@ -5,4 +5,5 @@ com\imooc\pojo\Videos.class
 com\imooc\pojo\Bgm.class
 com\imooc\pojo\User.class
 com\imooc\pojo\UsersReport.class
+com\imooc\pojo\vo\UserVO.class
 com\imooc\pojo\Comments.class
