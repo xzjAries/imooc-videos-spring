@@ -8,5 +8,11 @@ public interface VideoService {
 	/**
 	 * 保存视频
 	 */
-	public void saveVideo(Videos video);
+	public String saveVideo(Videos video);
+	
+	/**
+	 * 修改视频的封面
+	 */
+	public void updateVideo(String videoId,String coverPath);
+	
 }
