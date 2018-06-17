@@ -19,6 +19,7 @@ import com.imooc.pojo.Bgm;
 import com.imooc.pojo.Videos;
 import com.imooc.service.BgmService;
 import com.imooc.service.VideoService;
+import com.imooc.utils.FetchVideoCover;
 import com.imooc.utils.IMoocJSONResult;
 import com.imooc.utils.MergeVideoMp3;
 
@@ -57,19 +58,23 @@ public class VideoController extends BasicController {
 
 		// 保存到数据库中的相对路径
 		String uploadPathDB = "/" + userId + "/video";
+		String coverPathDB = "/" + userId + "/video";
 		FileOutputStream fileOutputStream = null;
 		InputStream inputStream = null;
-		String finalCoverPath = "";
+		String finalVideoPath = "";
 		try {
 			if (file != null) {
 				String filename = file.getOriginalFilename();
+				String fileNamePrefix = filename.split("\\.")[0];
+				
 				if (StringUtils.isNoneBlank(filename)) {
 					// 文件上传的最终路径
-					finalCoverPath = FILE_SPACE + uploadPathDB + "/" + filename;
+					finalVideoPath = FILE_SPACE + uploadPathDB + "/" + filename;
 					// 设置数据库的保存路径
 					uploadPathDB = (FILE_SPACE_CHILD + uploadPathDB + "/" + filename);
-
-					File outFile = new File(finalCoverPath);
+					coverPathDB = (FILE_SPACE_CHILD + coverPathDB + "/" + fileNamePrefix+".jpg");
+					
+					File outFile = new File(finalVideoPath);
 					if (outFile.getParentFile() != null || !outFile.getParentFile().isDirectory()) {
 						// 创建父文件夹
 						outFile.getParentFile().mkdirs();
@@ -98,15 +103,20 @@ public class VideoController extends BasicController {
 			Bgm bgm = bgmService.qureyBgmById(bgmId);
 			String mp3InuputPath = FILE_SPACE_PARENT + bgm.getPath();
 			MergeVideoMp3 tool = new MergeVideoMp3(FFMPEG_EXE);
-			String videoInputPath = finalCoverPath;
+			String videoInputPath = finalVideoPath;
 			String videoOutPutName = UUID.randomUUID().toString() + ".mp4";
 			uploadPathDB = FILE_SPACE_CHILD+"/" + userId + "/video" + "/" + videoOutPutName;
-			finalCoverPath = FILE_SPACE_PARENT + uploadPathDB;
-			tool.convertor(videoInputPath, mp3InuputPath, videoSeconds, finalCoverPath);
+			finalVideoPath = FILE_SPACE_PARENT + uploadPathDB;
+			tool.convertor(videoInputPath, mp3InuputPath, videoSeconds, finalVideoPath);
 		}
          
 		System.out.println("uploadPathDB = " + uploadPathDB);
-		System.out.println("finalCoverPath = " + finalCoverPath);
+		System.out.println("finalCoverPath = " + finalVideoPath);
+		//对视频进行截图
+		FetchVideoCover videoInfo = new FetchVideoCover(FFMPEG_EXE);
+	    videoInfo.getCover(finalVideoPath,FILE_SPACE_PARENT+coverPathDB);
+		
+		
 		//保存视频信息到数据库
 		Videos videos = new Videos();
 		videos.setAudioId(bgmId);
@@ -116,6 +126,7 @@ public class VideoController extends BasicController {
 		videos.setVideoWidth(videoWidth);
 		videos.setVideoDesc(desc);
 		videos.setVideoPath(uploadPathDB);
+		videos.setCoverPath(coverPathDB);
 		videos.setStatus(VideoStatusEnum.SUCCESS.value);
 		videos.setCreateTime(new Date());
 		String videoId = videoService.saveVideo(videos);
