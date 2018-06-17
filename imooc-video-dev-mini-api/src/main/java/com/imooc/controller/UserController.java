@@ -39,8 +39,6 @@ public class UserController extends BasicController {
         	return IMoocJSONResult.errorMap("用户id不能为空");
         }
 		
-		// 文件保存的命名空间
-		String fileSpace = "C:/imooc_videos_dev";
 		// 保存到数据库中的相对路径
 		String uploadPathDB = "/" + userId + "/face";
 		FileOutputStream fileOutputStream = null;
@@ -50,9 +48,9 @@ public class UserController extends BasicController {
 				String filename = files[0].getOriginalFilename();
 				if (StringUtils.isNoneBlank(filename)) {
 			       //文件上传的最终路径
-					String finalFacePath = fileSpace+uploadPathDB+"/"+filename;
+					String finalFacePath = FILE_SPACE+uploadPathDB+"/"+filename;
 					//设置数据库的保存路径
-					uploadPathDB=("/imooc_videos_dev"+uploadPathDB+"/"+filename);
+					uploadPathDB=(FILE_SPACE_CHILD+uploadPathDB+"/"+filename);
 					
 					File outFile = new File(finalFacePath);
 					if(outFile.getParentFile() !=null || !outFile.getParentFile().isDirectory()) {

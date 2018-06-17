@@ -3,16 +3,24 @@ package com.imooc.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.imooc.enums.VideoStatusEnum;
+import com.imooc.pojo.Bgm;
+import com.imooc.pojo.Videos;
+import com.imooc.service.BgmService;
+import com.imooc.service.VideoService;
 import com.imooc.utils.IMoocJSONResult;
+import com.imooc.utils.MergeVideoMp3;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -23,7 +31,12 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @Api(value = "视频上传业务接口", tags = "视频上传接口controller")
 @RequestMapping("/video")
-public class VideoController {
+public class VideoController extends BasicController {
+	@Autowired
+	private BgmService bgmService;
+
+	@Autowired
+	private VideoService videoService;
 	@ApiOperation(value = "上传视频", notes = "上传视频的接口")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "form"),
@@ -35,29 +48,26 @@ public class VideoController {
 
 	})
 
-	@PostMapping(value = "/upload",headers="content-type=multipart/form-data")
+	@PostMapping(value = "/upload", headers = "content-type=multipart/form-data")
 	public IMoocJSONResult upload(String userId, String bgmId, double videoSeconds, int videoWidth, int videoHeight,
-			String desc,
-			@ApiParam(value="短视频",required=true)
-			MultipartFile file) throws Exception {
+			String desc, @ApiParam(value = "短视频", required = true) MultipartFile file) throws Exception {
 		if (StringUtils.isBlank(userId)) {
 			return IMoocJSONResult.errorMap("用户id不能为空");
 		}
 
-		// 文件保存的命名空间
-		String fileSpace = "C:/imooc_videos_dev";
 		// 保存到数据库中的相对路径
 		String uploadPathDB = "/" + userId + "/video";
 		FileOutputStream fileOutputStream = null;
 		InputStream inputStream = null;
+		String finalVideoPath = "";
 		try {
-			if (file != null ) {
+			if (file != null) {
 				String filename = file.getOriginalFilename();
 				if (StringUtils.isNoneBlank(filename)) {
 					// 文件上传的最终路径
-					String finalVideoPath = fileSpace + uploadPathDB + "/" + filename;
+					finalVideoPath = FILE_SPACE + uploadPathDB + "/" + filename;
 					// 设置数据库的保存路径
-					uploadPathDB = ("/imooc_videos_dev" + uploadPathDB + "/" + filename);
+					uploadPathDB = (FILE_SPACE_CHILD + uploadPathDB + "/" + filename);
 
 					File outFile = new File(finalVideoPath);
 					if (outFile.getParentFile() != null || !outFile.getParentFile().isDirectory()) {
@@ -82,6 +92,34 @@ public class VideoController {
 			}
 		}
 
+		// 判断bgmId是否为空,如果不为空
+		// 那就查询bgm的信息，并且合并视频，生成新的视频
+		if (StringUtils.isNotBlank(bgmId)) {
+			Bgm bgm = bgmService.qureyBgmById(bgmId);
+			String mp3InuputPath = FILE_SPACE_PARENT + bgm.getPath();
+			MergeVideoMp3 tool = new MergeVideoMp3(FFMPEG_EXE);
+			String videoInputPath = finalVideoPath;
+			String videoOutPutName = UUID.randomUUID().toString() + ".mp4";
+			uploadPathDB = FILE_SPACE_CHILD+"/" + userId + "/video" + "/" + videoOutPutName;
+			finalVideoPath = FILE_SPACE_PARENT + uploadPathDB;
+			tool.convertor(videoInputPath, mp3InuputPath, videoSeconds, finalVideoPath);
+		}
+         
+		System.out.println("uploadPathDB = " + uploadPathDB);
+		System.out.println("finalVideoPath = " + finalVideoPath);
+		//保存视频信息到数据库
+		Videos videos = new Videos();
+		videos.setAudioId(bgmId);
+		videos.setUserId(userId);
+		videos.setVideoSeconds((float)videoSeconds);
+		videos.setVideoHeight(videoHeight);
+		videos.setVideoWidth(videoWidth);
+		videos.setVideoDesc(desc);
+		videos.setVideoPath(uploadPathDB);
+		videos.setStatus(VideoStatusEnum.SUCCESS.value);
+		videos.setCreateTime(new Date());
+		
+		videoService.saveVideo(videos);
 		return IMoocJSONResult.ok();
 
 	}

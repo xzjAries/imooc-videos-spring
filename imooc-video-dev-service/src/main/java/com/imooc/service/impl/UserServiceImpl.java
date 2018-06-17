@@ -25,6 +25,12 @@ public class UserServiceImpl implements BgmService {
 	public List<Bgm> queryBgmList() {
 		return bgmMapper.selectAll();
 	}
+    
+    @Transactional(propagation=Propagation.SUPPORTS)
+	@Override
+	public Bgm qureyBgmById(String bgmId) {
+		return bgmMapper.selectByPrimaryKey(bgmId);
+	}
 
    
 }
