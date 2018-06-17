@@ -3,15 +3,13 @@ package com.imooc.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.imooc.utils.IMoocJSONResult;
+
 @RestController
 public class HelloWord {
 	@RequestMapping("/hello")
- public String helloWord() {
-	 return "hellop word~";
+ public IMoocJSONResult helloWord() {
+	 return IMoocJSONResult.ok("zhengque");
  }
 	
-	@RequestMapping("center")
-    public String center() {
-        return "thymeleaf/center/center";
-    }
 }

@@ -1,4 +1,4 @@
-package com.imooc.service;
+package com.imooc.service.impl;
 
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.imooc.mapper.UserMapper;
 import com.imooc.pojo.User;
+import com.imooc.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class BgmServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 	
@@ -56,6 +57,16 @@ public class UserServiceImpl implements UserService {
 		Criteria criteria = userExample.createCriteria();
 		criteria.andEqualTo("id", user.getId());
 		userMapper.updateByExampleSelective(user, userExample);
+	}
+
+    @Transactional(propagation=Propagation.SUPPORTS)
+	@Override
+	public User queryUserInfo(String userId) {
+		Example userExample = new Example(User.class);
+		Criteria criteria = userExample.createCriteria();
+		criteria.andEqualTo("id", userId);
+		User user = userMapper.selectOneByExample(userExample);
+		return user;
 	}
 
 }
