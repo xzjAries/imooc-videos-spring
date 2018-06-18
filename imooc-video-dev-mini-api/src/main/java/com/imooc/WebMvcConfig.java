@@ -23,7 +23,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	
 	@Bean
 	public MiniInterceptor miniInterceptor() {	
-		return new MiniInterceptor();
+		return new MiniInterceptor(); 
 	}
 
 	@Override
