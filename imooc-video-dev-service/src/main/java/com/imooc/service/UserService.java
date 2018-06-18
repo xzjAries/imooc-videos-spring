@@ -38,4 +38,10 @@ public interface UserService {
      * @return
      */
     public User queryUserInfo(String userId);
+    
+    /*
+     * 查询用户和视频的关系是否喜欢视频
+     */
+    public boolean isUserLikeVideo(String userId,String videoId);
+    
 }

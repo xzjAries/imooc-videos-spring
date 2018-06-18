@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.imooc.pojo.User;
+import com.imooc.pojo.vo.PublisherVideo;
 import com.imooc.pojo.vo.UserVO;
 import com.imooc.service.UserService;
 import com.imooc.utils.IMoocJSONResult;
@@ -99,4 +100,27 @@ public class UserController extends BasicController {
 
 	}
 
+	@PostMapping("/queryPublisher")
+	public IMoocJSONResult queryPublisher(String loginUserId,String videoId,
+			String publishUserId) throws Exception {
+        if(StringUtils.isBlank(publishUserId)) {
+        	return IMoocJSONResult.errorMsg("");
+        }
+        
+        //1.查询视频发布者的信息
+		User userInfo = userService.queryUserInfo(publishUserId);
+		UserVO publisher= new UserVO();
+		BeanUtils.copyProperties(userInfo, publisher);
+		
+		//2.查询当前登录着和视频的关系
+		boolean userLikeVideo = userService.isUserLikeVideo(loginUserId, videoId);
+		
+		PublisherVideo bean = new PublisherVideo();
+		bean.setPublisher(publisher);
+		bean.setUserLikeVideo(userLikeVideo);
+		
+		return IMoocJSONResult.ok(bean);
+
+	}
+	
 }

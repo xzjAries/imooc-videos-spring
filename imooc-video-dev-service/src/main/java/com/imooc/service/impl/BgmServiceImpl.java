@@ -1,72 +1,36 @@
 package com.imooc.service.impl;
 
+import java.util.List;
+
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.imooc.mapper.UserMapper;
-import com.imooc.pojo.User;
-import com.imooc.service.UserService;
-
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
+import com.imooc.mapper.BgmMapper;
+import com.imooc.pojo.Bgm;
+import com.imooc.service.BgmService;
 
 @Service
-public class BgmServiceImpl implements UserService {
+public class BgmServiceImpl implements BgmService {
     @Autowired
-    private UserMapper userMapper;
+    private BgmMapper bgmMapper;
 	
     @Autowired
     private Sid sid;
     
     @Transactional(propagation=Propagation.SUPPORTS)
 	@Override
-	public boolean queryUsernameIsExist(String username) {
-		User user = new User();
-		user.setUsername(username);
-		User result = userMapper.selectOne(user);
-	
-		return result==null?false:true;
-	}
-
-    @Transactional(propagation=Propagation.REQUIRED)
-	@Override
-	public void saveUser(User user) {
-		String userId = sid.nextShort();
-		user.setId(userId);
-		userMapper.insert(user);
-	}
-
-    @Transactional(propagation=Propagation.SUPPORTS)
-	@Override
-	public User queryUserForLogin(String username, String password) {
-		Example userExample = new Example(User.class);
-		Criteria criteria = userExample.createCriteria();
-		criteria.andEqualTo("username",username);
-		criteria.andEqualTo("password",password);
-		User result = userMapper.selectOneByExample(userExample);
-		return result;
+	public List<Bgm> queryBgmList() {
+		return bgmMapper.selectAll();
 	}
     
     @Transactional(propagation=Propagation.SUPPORTS)
 	@Override
-	public void updateUserInfo(User user) {
-		Example userExample = new Example(User.class);
-		Criteria criteria = userExample.createCriteria();
-		criteria.andEqualTo("id", user.getId());
-		userMapper.updateByExampleSelective(user, userExample);
+	public Bgm qureyBgmById(String bgmId) {
+		return bgmMapper.selectByPrimaryKey(bgmId);
 	}
 
-    @Transactional(propagation=Propagation.SUPPORTS)
-	@Override
-	public User queryUserInfo(String userId) {
-		Example userExample = new Example(User.class);
-		Criteria criteria = userExample.createCriteria();
-		criteria.andEqualTo("id", userId);
-		User user = userMapper.selectOneByExample(userExample);
-		return user;
-	}
-
+   
 }

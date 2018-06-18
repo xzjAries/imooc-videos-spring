@@ -27,4 +27,14 @@ public interface VideoService {
 	 * 热搜词
 	 */
     public List<String> getHotwords();
+    
+    /**
+     * 用户喜欢视频/点赞
+     */
+    public void userLikeVideo(String userId,String videoId,String videoCreaterId);
+   
+    /**
+     * 用户不喜欢视频/取消电赞
+     */
+    public void userUnLikeVideo(String userId,String videoId,String videoCreaterId);
 }

@@ -230,4 +230,19 @@ public class VideoController extends BasicController {
 
 	}
 	
+	@PostMapping(value = "/userLike")
+	public IMoocJSONResult userLike(String userId, String videoId, String videoCreaterId) throws Exception {
+		
+		videoService.userLikeVideo(userId, videoId, videoCreaterId);
+		return IMoocJSONResult.ok();
+
+	}
+	
+	@PostMapping(value = "/userUnLike")
+	public IMoocJSONResult userUnLike(String userId, String videoId, String videoCreaterId) throws Exception {
+		videoService.userUnLikeVideo(userId, videoId, videoCreaterId);
+		return IMoocJSONResult.ok();
+
+	}
+	
 }
