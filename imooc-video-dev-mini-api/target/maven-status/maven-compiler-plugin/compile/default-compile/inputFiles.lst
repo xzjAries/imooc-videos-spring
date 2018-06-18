@@ -5,5 +5,6 @@ D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\WebMvcConfig.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\controller\RegistLoginController.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\controller\BgmController.java
+D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\controller\interceptor\MiniInterceptor.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\controller\BasicController.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-mini-api\src\main\java\com\imooc\Swagger2.java

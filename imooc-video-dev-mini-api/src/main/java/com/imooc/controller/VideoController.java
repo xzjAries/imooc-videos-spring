@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import com.imooc.service.VideoService;
 import com.imooc.utils.FetchVideoCover;
 import com.imooc.utils.IMoocJSONResult;
 import com.imooc.utils.MergeVideoMp3;
+import com.imooc.utils.PagedResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -65,7 +67,16 @@ public class VideoController extends BasicController {
 		try {
 			if (file != null) {
 				String filename = file.getOriginalFilename();
-				String fileNamePrefix = filename.split("\\.")[0];
+				
+				// abc.mp4
+				String arrayFilenameItem[] =  filename.split("\\.");
+				String fileNamePrefix = "";
+				for (int i = 0 ; i < arrayFilenameItem.length-1 ; i ++) {
+					fileNamePrefix += arrayFilenameItem[i];
+				}
+				// fix bug: 解决小程序端OK，PC端不OK的bug，原因：PC端和小程序端对临时视频的命名不同
+                //String fileNamePrefix = fileName.split("\\.")[0];
+
 				
 				if (StringUtils.isNoneBlank(filename)) {
 					// 文件上传的最终路径
@@ -193,4 +204,30 @@ public class VideoController extends BasicController {
 		return IMoocJSONResult.ok();
 
 	}
+	
+	/**
+	 * 
+	 * 分页和搜索查询视频列表
+	 * @param isSaveRecord 1-需要保存，
+	 *                     0-null不需要保存
+	 */
+	@PostMapping(value = "/showAll")
+	public IMoocJSONResult showALl(@RequestBody Videos video, Integer isSaveRecord, Integer page) throws Exception {
+		
+		if(page == null) {
+			page = 1;
+		}
+	
+		PagedResult pagedResult = videoService.getAllVides(video,isSaveRecord,page, PAGE_SIZE);
+		return IMoocJSONResult.ok(pagedResult);
+
+	}
+	
+	@PostMapping(value = "/hot")
+	public IMoocJSONResult hot() throws Exception {
+		
+		return IMoocJSONResult.ok(videoService.getHotwords());
+
+	}
+	
 }

@@ -11,6 +11,7 @@ D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\j
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\strategy\DayPrefixRandomCodeStrategy.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\FFMpegTest.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\RedisOperator.java
+D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\PagedResult.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\InvalidSystemClock.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\MyMapper.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\IMoocJSONResult.java
@@ -19,6 +20,7 @@ D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\j
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\utils\Serializes.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\Code.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\utils\HttpReq.java
+D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\com\imooc\utils\JsonUtils.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\IdWorker.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\utils\Utils.java
 D:\git\imooc-videos-master\imooc-videos-spring\imooc-video-dev-common\src\main\java\org\n3r\idworker\DayCode.java
