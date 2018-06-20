@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.imooc.mapper.CommentsMapper" >
-  <resultMap id="BaseResultMap" type="com.imooc.pojo.Comments" >
+<mapper namespace="com.imooc.mapper.CommentsMapperCustom" >
+  <resultMap id="BaseResultMap" type="com.imooc.pojo.vo.CommentsVO" >
     <!--
       WARNING - @mbg.generated
     -->
@@ -12,8 +12,6 @@
     <result column="from_user_id" property="fromUserId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
-    <result column="face_image" property="faceImage" jdbcType="VARCHAR" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="face_image" property="faceImage" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
   </resultMap>
