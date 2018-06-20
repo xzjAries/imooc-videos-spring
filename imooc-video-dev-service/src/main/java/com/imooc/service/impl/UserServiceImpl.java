@@ -1,5 +1,6 @@
 package com.imooc.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.imooc.mapper.UserMapper;
 import com.imooc.mapper.UsersFansMapper;
 import com.imooc.mapper.UsersLikeVideosMapper;
+import com.imooc.mapper.UsersReportMapper;
 import com.imooc.pojo.User;
 import com.imooc.pojo.UsersFans;
 import com.imooc.pojo.UsersLikeVideos;
+import com.imooc.pojo.UsersReport;
 import com.imooc.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UsersFansMapper  usersFansMapper;
+	
+	@Autowired
+	private UsersReportMapper usersReportMapper;
 	
 	@Autowired
 	private Sid sid;
@@ -148,6 +154,16 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return false;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void reportUser(UsersReport usersReport) {
+   		String urId = sid.nextShort();
+   		usersReport.setId(urId);
+   		usersReport.setCreateDate(new Date());
+   		
+   		usersReportMapper.insert(usersReport);
 	}
 
 }

@@ -9,12 +9,14 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.imooc.pojo.User;
+import com.imooc.pojo.UsersReport;
 import com.imooc.pojo.vo.PublisherVideo;
 import com.imooc.pojo.vo.UserVO;
 import com.imooc.service.UserService;
@@ -143,6 +145,15 @@ public class UserController extends BasicController {
         userService.saveUserFanRelation(userId, fanId);
       
 		return IMoocJSONResult.ok("取消关注成功...");
+
+	}
+	
+	@PostMapping("/reportUser")
+	public IMoocJSONResult reportUser(@RequestBody UsersReport usersReport) throws Exception {
+       
+        userService.reportUser(usersReport);
+      
+		return IMoocJSONResult.ok("举报成功,平台有你更健康...");
 
 	}
 	

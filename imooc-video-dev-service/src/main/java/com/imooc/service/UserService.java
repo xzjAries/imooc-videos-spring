@@ -1,6 +1,7 @@
 package com.imooc.service;
 
 import com.imooc.pojo.User;
+import com.imooc.pojo.UsersReport;
 
 
 public interface UserService {
@@ -62,4 +63,9 @@ public interface UserService {
      * 查询用户是否被关注
      */
     public boolean queryIfFollow(String userId,String fanId);
+
+    /**
+     * 用户举报视频
+     */
+    public void reportUser(UsersReport usersReport);
 }

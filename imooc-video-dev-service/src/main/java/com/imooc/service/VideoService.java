@@ -42,4 +42,12 @@ public interface VideoService {
      * 获取用户点赞（收藏）过的视频列表
      */
     public PagedResult queryMyLikeVideos(String userId,Integer page,Integer pageSize);
+
+    /**
+     * 获取我关注的人发的视频
+     */
+    public PagedResult queryMyFollowVideos(String userId,Integer page,Integer pageSize);
+     
+
+     
 }

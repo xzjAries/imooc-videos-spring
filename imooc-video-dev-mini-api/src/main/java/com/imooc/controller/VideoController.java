@@ -265,4 +265,26 @@ public class VideoController extends BasicController {
 
 	}
 	
+	@PostMapping(value = "/showMyFollow")
+	public IMoocJSONResult showMyFollow(String userId, Integer page, Integer pageSize) throws Exception {
+       if(StringUtils.isBlank(userId)) {
+    	   return IMoocJSONResult.errorMsg("");
+       }
+       
+       if(page == null) {
+    	   page = 1;
+       }
+       
+       if(pageSize == null) {
+    	   pageSize = PAGE_SIZE;
+       }
+		
+       PagedResult videoList = videoService.queryMyFollowVideos(userId, page, pageSize);
+       
+		return IMoocJSONResult.ok(videoList);
+
+	}
+	
+	
+	
 }

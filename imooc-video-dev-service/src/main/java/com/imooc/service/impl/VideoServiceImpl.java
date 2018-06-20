@@ -1,5 +1,6 @@
 package com.imooc.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.n3r.idworker.Sid;
@@ -13,10 +14,12 @@ import com.github.pagehelper.PageInfo;
 import com.imooc.mapper.SearchRecordsMapper;
 import com.imooc.mapper.UserMapper;
 import com.imooc.mapper.UsersLikeVideosMapper;
+import com.imooc.mapper.UsersReportMapper;
 import com.imooc.mapper.VideosMapper;
 import com.imooc.mapper.VideosMapperCustom;
 import com.imooc.pojo.SearchRecords;
 import com.imooc.pojo.UsersLikeVideos;
+import com.imooc.pojo.UsersReport;
 import com.imooc.pojo.Videos;
 import com.imooc.pojo.vo.VideosVO;
 import com.imooc.service.VideoService;
@@ -41,7 +44,9 @@ public class VideoServiceImpl implements VideoService {
 
 	@Autowired
 	private UserMapper userMapper;
+	
 
+	
 	@Autowired
 	private Sid sid;
 
@@ -149,6 +154,23 @@ public class VideoServiceImpl implements VideoService {
 		
 		return pagedResult;
 		
+	}
+	
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public PagedResult queryMyFollowVideos(String userId, Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<VideosVO> list = videosMapperCustom.queryMyFollowVideos(userId);
+		
+		PageInfo<VideosVO> pageList = new PageInfo<>(list);
+		
+		PagedResult pagedResult = new PagedResult();
+		 pagedResult.setTotal(pageList.getPages());
+		 pagedResult.setRows(list);
+		 pagedResult.setPage(page);
+		 pagedResult.setRecords(pageList.getTotal());
+		
+		return pagedResult;
 	}
 
 }
