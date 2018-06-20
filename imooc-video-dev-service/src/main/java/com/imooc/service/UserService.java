@@ -44,4 +44,17 @@ public interface UserService {
      */
     public boolean isUserLikeVideo(String userId,String videoId);
     
+    /**
+     * 增加用户和粉丝的关系
+     * @param userId
+     * @param fanId
+     */
+    public void saveUserFanRelation(String userId,String fanId);
+    
+    /**
+     * 删除用户和粉丝的关系
+     * @param userId
+     * @param fanId
+     */
+    public void deleteUserFanRelation(String userId,String fanId);
 }

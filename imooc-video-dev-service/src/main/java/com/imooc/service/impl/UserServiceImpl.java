@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.imooc.mapper.UserMapper;
+import com.imooc.mapper.UsersFansMapper;
 import com.imooc.mapper.UsersLikeVideosMapper;
 import com.imooc.pojo.User;
+import com.imooc.pojo.UsersFans;
 import com.imooc.pojo.UsersLikeVideos;
 import com.imooc.service.UserService;
-import com.imooc.utils.IMoocJSONResult;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UsersLikeVideosMapper usersLikeVideosMapper;
 
+	@Autowired
+	private UsersFansMapper  usersFansMapper;
+	
 	@Autowired
 	private Sid sid;
 
@@ -97,6 +101,37 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return false;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void saveUserFanRelation(String userId, String fanId) {
+		String relId = sid.nextShort();
+		
+		UsersFans usersFans = new UsersFans();
+		usersFans.setId(relId);
+		usersFans.setUserId(userId);
+		usersFans.setFanId(fanId);
+		
+		usersFansMapper.insert(usersFans); 
+		
+		userMapper.addFansCount(userId);
+		userMapper.addFollersCount(fanId); 
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void deleteUserFanRelation(String userId, String fanId) {
+		
+		Example example = new Example(UsersFans.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("fanId", fanId);
+		
+		usersFansMapper.deleteByExample(example);
+		userMapper.reduceFansCount(userId);
+		userMapper.reduceFollersCount(fanId); 
 	}
 
 }

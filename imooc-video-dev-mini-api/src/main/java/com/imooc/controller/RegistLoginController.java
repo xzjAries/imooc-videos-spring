@@ -89,8 +89,8 @@ public class RegistLoginController extends BasicController{
 	@ApiOperation(value="用户注銷",notes="用户注銷接口")
 	@ApiImplicitParam(name="userId",value="用户id",required=true,
 	                  dataType="String",paramType="query")
-	@PostMapping("/loginOut")
-	public IMoocJSONResult loginOut(String userId) throws Exception {
+	@PostMapping("/logout")
+	public IMoocJSONResult logout(String userId) throws Exception {
 		System.out.println("userId:" + userId);
 		
 	    redis.del(USER_REDIS_SESSION+":"+userId);

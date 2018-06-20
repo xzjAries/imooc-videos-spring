@@ -123,4 +123,26 @@ public class UserController extends BasicController {
 
 	}
 	
+	@PostMapping("/beyourfans")
+	public IMoocJSONResult beyourfans(String userId,String fanId) throws Exception {
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(userId)) {
+        	return IMoocJSONResult.errorMsg("");
+        }
+        userService.saveUserFanRelation(userId, fanId);
+      
+		return IMoocJSONResult.ok("关注成功...");
+
+	}
+	
+	@PostMapping("/dontbeyourfans")
+	public IMoocJSONResult dontbeyourfans(String userId,String fanId) throws Exception {
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(userId)) {
+        	return IMoocJSONResult.errorMsg("");
+        }
+        userService.saveUserFanRelation(userId, fanId);
+      
+		return IMoocJSONResult.ok("取消关注成功...");
+
+	}
+	
 }
