@@ -134,4 +134,20 @@ public class UserServiceImpl implements UserService {
 		userMapper.reduceFollersCount(fanId); 
 	}
 
+	@Override
+	public boolean queryIfFollow(String userId, String fanId) {
+		Example example = new Example(UsersFans.class);
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("fanId", fanId);
+		
+		List<UsersFans> list = usersFansMapper.selectByExample(example);
+		if(list != null && !list.isEmpty()&&list.size()>0) {
+			return true;
+		}
+		
+		return false;
+	}
+
 }

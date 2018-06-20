@@ -57,4 +57,9 @@ public interface UserService {
      * @param fanId
      */
     public void deleteUserFanRelation(String userId,String fanId);
+    
+    /**
+     * 查询用户是否被关注
+     */
+    public boolean queryIfFollow(String userId,String fanId);
 }

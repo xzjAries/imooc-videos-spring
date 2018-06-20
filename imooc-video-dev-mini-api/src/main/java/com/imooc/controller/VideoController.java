@@ -245,4 +245,24 @@ public class VideoController extends BasicController {
 
 	}
 	
+	@PostMapping(value = "/showMyLike")
+	public IMoocJSONResult showMyLike(String userId, Integer page, Integer pageSize) throws Exception {
+       if(StringUtils.isBlank(userId)) {
+    	   return IMoocJSONResult.errorMsg("");
+       }
+       
+       if(page == null) {
+    	   page = 1;
+       }
+       
+       if(pageSize == null) {
+    	   pageSize = PAGE_SIZE;
+       }
+		
+       PagedResult videoList = videoService.queryMyLikeVideos(userId, page, pageSize);
+       
+		return IMoocJSONResult.ok(videoList);
+
+	}
+	
 }

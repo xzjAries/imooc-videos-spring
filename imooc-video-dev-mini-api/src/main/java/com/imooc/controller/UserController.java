@@ -88,13 +88,14 @@ public class UserController extends BasicController {
 	@ApiImplicitParam(name = "userId", value = "用户id",
 	                   required = true, dataType = "String", paramType = "query")
 	@PostMapping("/query")
-	public IMoocJSONResult query(String userId) throws Exception {
+	public IMoocJSONResult query(String userId,String fanId) throws Exception {
         if(StringUtils.isBlank(userId)) {
         	return IMoocJSONResult.errorMap("用户id不能为空");
         }
 		User userInfo = userService.queryUserInfo(userId);
 		UserVO userVO= new UserVO();
 		BeanUtils.copyProperties(userInfo, userVO);
+		userVO.setFollow(userService.queryIfFollow(userId, fanId));
 		
 		return IMoocJSONResult.ok(userVO);
 
@@ -114,7 +115,7 @@ public class UserController extends BasicController {
 		
 		//2.查询当前登录着和视频的关系
 		boolean userLikeVideo = userService.isUserLikeVideo(loginUserId, videoId);
-		
+		 
 		PublisherVideo bean = new PublisherVideo();
 		bean.setPublisher(publisher);
 		bean.setUserLikeVideo(userLikeVideo);

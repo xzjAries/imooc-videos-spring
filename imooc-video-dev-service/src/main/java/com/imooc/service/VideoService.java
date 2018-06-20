@@ -37,4 +37,9 @@ public interface VideoService {
      * 用户不喜欢视频/取消电赞
      */
     public void userUnLikeVideo(String userId,String videoId,String videoCreaterId);
+    
+    /**
+     * 获取用户点赞（收藏）过的视频列表
+     */
+    public PagedResult queryMyLikeVideos(String userId,Integer page,Integer pageSize);
 }

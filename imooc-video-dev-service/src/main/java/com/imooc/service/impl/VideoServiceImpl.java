@@ -67,8 +67,10 @@ public class VideoServiceImpl implements VideoService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public PagedResult getAllVides(Videos video, Integer isSaveRecord, Integer page, Integer pageSize) {
-		String desc = video.getVideoDesc();
 		// 保存热搜词语
+		String desc = video.getVideoDesc();
+		String userId = video.getUserId();
+		
 		if (isSaveRecord != null && isSaveRecord == 1) {
 			SearchRecords record = new SearchRecords();
 			String recordId = sid.nextShort();
@@ -78,7 +80,7 @@ public class VideoServiceImpl implements VideoService {
 		}
 
 		PageHelper.startPage(page, pageSize);
-		List<VideosVO> list = videosMapperCustom.queryAllVideos(desc);
+		List<VideosVO> list = videosMapperCustom.queryAllVideos(desc,userId);
 
 		PageInfo<VideosVO> pageList = new PageInfo<>(list);
 
@@ -128,6 +130,25 @@ public class VideoServiceImpl implements VideoService {
 		videosMapperCustom.reduceVideoLikeCount(videoId);
 		// 3.用户喜欢数量的累減
 		userMapper.reduceReceiveLikeCount(userId);
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public PagedResult queryMyLikeVideos(String userId, Integer page, Integer pageSize) {
+		
+		PageHelper.startPage(page, pageSize);
+		List<VideosVO> list = videosMapperCustom.queryMyLikeVideos(userId);
+		
+		PageInfo<VideosVO> pageList = new PageInfo<>(list);
+		
+		PagedResult pagedResult = new PagedResult();
+		 pagedResult.setTotal(pageList.getPages());
+		 pagedResult.setRows(list);
+		 pagedResult.setPage(page);
+		 pagedResult.setRecords(pageList.getTotal());
+		
+		return pagedResult;
+		
 	}
 
 }
