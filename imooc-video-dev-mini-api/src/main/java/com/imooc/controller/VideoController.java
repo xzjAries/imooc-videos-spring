@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.imooc.enums.VideoStatusEnum;
 import com.imooc.pojo.Bgm;
+import com.imooc.pojo.Comments;
 import com.imooc.pojo.Videos;
 import com.imooc.service.BgmService;
 import com.imooc.service.VideoService;
@@ -285,6 +286,27 @@ public class VideoController extends BasicController {
 
 	}
 	
+	@PostMapping(value = "/saveComment")
+	public IMoocJSONResult saveComment(@RequestBody Comments comment) throws Exception {
+        videoService.saveComment(comment);
+		return IMoocJSONResult.ok();
+	}
 	
+	@PostMapping(value = "/getVideoComments")
+	public IMoocJSONResult getVideoComments(String videoId, Integer page, Integer pageSize) throws Exception {
+        if(StringUtils.isBlank(videoId)) {
+        	return IMoocJSONResult.errorMsg("");
+        }
+        
+        if(page == null) {
+        	page = 1;
+        }
+        if(pageSize == null) {
+        	pageSize = PAGE_SIZE;
+        }
+        PagedResult list = videoService.getAllComments(videoId, page, pageSize);
+		
+		return IMoocJSONResult.ok(list);
+	}
 	
 }

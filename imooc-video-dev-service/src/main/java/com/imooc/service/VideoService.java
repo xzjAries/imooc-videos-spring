@@ -2,6 +2,9 @@ package com.imooc.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+
+import com.imooc.pojo.Comments;
 import com.imooc.pojo.Videos;
 import com.imooc.utils.PagedResult;
 
@@ -48,6 +51,13 @@ public interface VideoService {
      */
     public PagedResult queryMyFollowVideos(String userId,Integer page,Integer pageSize);
      
-
-     
+   /**
+    * 保存评论功能
+    */
+    public void saveComment(Comments comment);
+    
+    /**
+     * 获取所有留言的接口
+     */
+    public PagedResult getAllComments(String videoId,Integer page,Integer pageSize);
 }

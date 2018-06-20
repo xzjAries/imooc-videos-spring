@@ -13,4 +13,6 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
   </resultMap>
+  
+  
 </mapper>
