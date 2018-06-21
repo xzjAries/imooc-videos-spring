@@ -18,11 +18,20 @@ public class CommentsVO {
 
     private String faceImage;
     private String nickname;
+    private String toNickname;
     private String timeAgoStr;
     
     
     
-    public String getFaceImage() {
+    public String getToNickname() {
+		return toNickname;
+	}
+
+	public void setToNickname(String toNickname) {
+		this.toNickname = toNickname;
+	}
+
+	public String getFaceImage() {
 		return faceImage;
 	}
 
