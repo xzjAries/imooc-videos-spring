@@ -173,7 +173,6 @@ public class RedisOperator {
 	 * 实现命令：RPUSH key value，将一个值 value插入到列表 key的表尾(最右边)。
 	 * 
 	 * @param key
-	 * @param value
 	 * @return 执行 LPUSH命令后，列表的长度。
 	 */
 	public long rpush(String key, String value) {
